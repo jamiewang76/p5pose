@@ -1,0 +1,78 @@
+    button {
+      margin: 6px 6px 6px 0;
+      padding: 4px;
+      font-size: 14px;
+    }
+    .canvas{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 1;
+    }
+    .house{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -1;
+    }
+    .countdown{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -2;
+    }
+    .good{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -3;
+    }
+    .bird{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -4;
+    }
+    .countdown2{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -5;
+    }
+    .perfect{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -6;
+    }
+    .river{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -7;
+    }
+    .countdown3{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: -8;
+    }
+    .housegif{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 2;
+    }
+    /* video {
+      width: 300;
+      height: 300;
+    } */
+
+    p {
+      display: inline;
+      font-size: 16px;
+    }
+
+    .emoji {
+      font-size: 24px;
+    }
