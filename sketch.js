@@ -20,21 +20,43 @@ let a=[];
 let allowedToPredict = false;
 var delayInMilliseconds = 4000;
 let housegif;
+let birdgif;
+let rivergif;
+let recordgif;
+let creategif;
+var logged = false;
 //var delayInTwoMilliseconds = 6000;
 const numLabels = knnClassifier.getNumLabels();
 var phase = "record";
 var number = 0;
-// function preload() {
-//   holdimg = loadImage('img/hold.jpg');
+function preload() {
+  //holdimg = loadImage('img/hold.jpg');
+
+  recordgif = createImg('img/record.gif');
+  creategif = createImg('img/create.gif');
+framegif = createImg('img/frame.gif');
+  housegif = createImg("img/house.gif");
+  housegif.hide();
+  birdgif = createImg("img/bird.gif");
+  birdgif.hide();
+  rivergif = createImg("img/river.gif");
+  rivergif.hide();
+  // recordgif = createImg('img/record.gif');
+  // creategif = createImg('img/create.gif');
+
+}
+// function preload(){
 //   housegif = createImg("img/house.gif");
+//   housegif.elt.className = "housegif";
 // }
 function setup() {
+  //housegif = loadImage("img/house.gif");
   // const canvas = createCanvas(window.innerWidth, window.innerHeight);
   //canvas.parent('videoContainer');
   // video = createCapture(VIDEO);
   //
   // video.size(width, height);
-  housegif = loadImage("img/house.gif");
+
   // housegif.elt.className = "housegif";
 //request videos
   house = createVideo(['vid/house.m4v']);
@@ -53,9 +75,11 @@ function setup() {
   river.elt.className = "river";
   countdown3 = createVideo(['vid/countdown3.m4v']);
   countdown3.elt.className = "countdown3";
+  conclude = createVideo(['vid/conclude.m4v']);
+  conclude.elt.className = "conclude";
 const canvas = createCanvas(window.innerWidth, window.innerHeight);
   video = createCapture(VIDEO);
-
+  video.elt.className = "posevideo";
   video.size(width, height);
   // Create the UI buttons
   //createButtons();
@@ -80,23 +104,34 @@ const canvas = createCanvas(window.innerWidth, window.innerHeight);
   buttonB = createButton('Second');
   buttonC = createButton('Third');
   buttonD = createButton('Predict!');
+  buttonStart.hide();
+  buttonA.hide();
+  buttonB.hide();
+  buttonC.hide();
+  buttonD.hide();
 
-  buttonStart.mousePressed(buttonStartPressed);
+  recordgif.mousePressed(buttonStartPressed);
   buttonA.mousePressed(buttonAPressed);
   buttonB.mousePressed(buttonBPressed);
   buttonC.mousePressed(buttonCPressed);
-  buttonD.mousePressed(buttonDPressed);
+  creategif.mousePressed(buttonDPressed);
 }
 
 function draw() {
-  //image(video, 0, 0, width, height);
+  framegif.size(1900,800);
 
+
+  // let phase = "create";
+  // let allowedToPredict = true;
+  //image(video, 0, 0, width, height);
   if(phase == "record"){
     //console.log(Button);
     initiate.input();
   }else if(phase == "create"){
     //alert("create!")
     //console.log(allowedToPredict);
+    // video.show();
+    // tint(255, 50);
     if (poses.length>0 && allowedToPredict) {
       //console.log("classify!");
       classify();
@@ -105,6 +140,12 @@ function draw() {
         buttonDPressed();
       }else{
         allowedToPredict = false;
+
+      }
+    }else{
+      if(!logged){
+        console.log("Not predicting");
+        logged = true;
       }
     }
   }
@@ -123,14 +164,14 @@ function modelReady(){
 
 // Add the current frame from the video to the classifier
 function addExample(label) {
-  //if (poses[0]!=undefined){
+  if (poses[0]!=undefined){
     const poseArray = poses[0].pose.keypoints.map(p => [p.score, p.position.x, p.position.y]);
     console.log(poses);
     // Add an example with a label to the classifier
     knnClassifier.addExample(poseArray, label);
     //console.log(poseArray);
     updateCounts();
-  //}
+  }
   // Convert poses results to a 2d array [[score0, x0, y0],...,[score16, x16, y16]]
   // const poseArray = poses[0].pose.keypoints.map(p => [p.score, p.position.x, p.position.y]);
   //
@@ -218,6 +259,7 @@ function updateCounts() {
     decideC = false;
     countdown3.remove();
     console.log("all recorded!");
+    conclude.play();
   }
   select('#exampleA').html(counts['A'] || 0);
   select('#exampleB').html(counts['B'] || 0);
@@ -326,6 +368,7 @@ function buttonCPressed(){
 
 }
 function buttonDPressed(){
+  logged = false;
   setTimeout(function() {
    allowedToPredict = true;
    phase = "create";
@@ -354,19 +397,67 @@ class Button{
       //}
     }
       output(){
+        //classificationResult="B";
+        // for (let i = 0; i < poses.length; i++) {
+        //   // For each pose detected, loop through all the keypoints
+        //   let pose = poses[i].pose;
+        //   for (let j = 0; j < pose.keypoints.length; j++) {
+        //     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+        //     let partname=poses[i].pose.keypoints[j].part;
+        //     let score=poses[i].pose.keypoints[j].score;
+        //     let x=poses[i].pose.keypoints[j].position.x;
+        //     let y=poses[i].pose.keypoints[j].position.y;
+        //
+        //     let keypoint = pose.keypoints[j];
+        //     /////////////////////////////////////
+        //     let personPose = poses[0].pose;
+        //     let personScore = personPose.score;
+        //     if(personScore>0.2){
+        //       let personNose = personPose.keypoints[0].position;
+        //       let noseX = personNose.x;
+        //       let noseY = personNose.y;
+        //       fill(255,0,0);
+        //       noStroke();
+        //       ellipse(noseX,noseY,10,10);
+        //       image(housegif,noseX,noseY,200,450);
+        //     }
+        //       }
+        //
+        //     }
+         //classificationResult = "A";
+         let personPose = poses[0].pose;
+         let personScore = personPose.score;
+
+           let personNose = personPose.keypoints[0].position;
+           let noseX = personNose.x;
+           let noseY = personNose.y;
+           // fill(255,0,0);
+           // noStroke();
+           // ellipse(noseX,noseY,10,10);
+           //image(housegif,noseX,noseY,200,450);
+
   if (classificationResult == "A") {
     allowedToPredict = false;
     console.log("Pose A");
-    image(housegif,0,0,200,200);
+    housegif.position(windowWidth-noseX-0.5*housegif.width,noseY);
+    housegif.show();
+    //image(housegif,noseX,noseY,200,450);
+
+    //housegif.position(0,0);
   //   document.getElementById("housegif").style.display="block";
   // document.getElementById("housegif").style.width="100px";
   }else if (classificationResult == "B") {
 allowedToPredict = false;
-console.log("Pose B")
+console.log("Pose B");
+birdgif.position(windowWidth-noseX-0.5*birdgif.width,noseY);
+birdgif.show();
 
   } else if (classificationResult == "C") {
     allowedToPredict = false;
-    console.log("Pose C")
+    console.log("Pose C");
+    console.log(windowWidth-noseX);
+    rivergif.position(windowWidth-noseX-0.5*rivergif.width,noseY);
+    rivergif.show();
 
   } else {
     console.log("Not identified!")
